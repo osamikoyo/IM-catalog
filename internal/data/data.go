@@ -8,6 +8,7 @@ import (
 
 	"github.com/osamikoyo/IM-catalog/internal/config"
 	"github.com/osamikoyo/IM-catalog/internal/data/models"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -38,4 +39,19 @@ func (s *Storage) Add(product *models.Product) error {
 
 	_, err := s.coll.InsertOne(s.ctx, product)
 	return err
+}
+
+func (s *Storage) Get(id uint64) (*models.Product, error){
+	cursor := s.coll.FindOne(s.ctx, bson.M{
+		"id" : id,
+	})
+
+	var product models.Product
+
+	err := cursor.Decode(&product)	
+	if err != nil{
+		return nil, err
+	}
+
+	return &product, nil
 }
