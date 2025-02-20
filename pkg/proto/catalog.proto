@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+option go_package = "./pkg/proto/pb";
+
 message product{
     uint64 ID = 1;
     string Name = 2;
@@ -7,6 +9,46 @@ message product{
     uint64 Price = 4;
 }
 
-message AddReq{
+service CatalogService{
+    rpc Add (AddReq) returns (Response);
+    rpc Update (UpdateReq) returns (Response);
+    rpc GetOne (GetOneReq) returns (GetMoreResp);
+    rpc GetMore (GetMoreReq) returns (GetMoreResp);
+    rpc Delete (DeleteReq) returns (Response);
+}
 
+message AddReq{
+    product Product = 1;
+}
+
+message Response{
+    string Error = 1;
+    uint32 Status = 2;
+}
+
+message UpdateReq{
+    uint64 ID = 1;
+    product NewParams = 2;
+}
+
+message GetOneReq{
+    uint64 ID = 1;
+}
+
+message GetOneResp{
+    product Product = 1;
+    Response response = 2;
+}
+
+message GetMoreReq{
+    string Name = 1;
+}
+
+message GetMoreResp{
+    repeated product Products = 1;
+    Response response = 2;
+}
+
+message DeleteReq{
+    uint64 ID = 1;
 }
