@@ -55,3 +55,12 @@ func (s *Storage) Get(id uint64) (*models.Product, error){
 
 	return &product, nil
 }
+
+func (s *Storage) Delete(id uint64) error {
+	filter := bson.M{
+		"id" : id,
+	}
+
+	res := s.coll.FindOneAndDelete(s.ctx, filter)
+	return res.Err()
+}
