@@ -23,6 +23,7 @@ const (
 	CatalogService_Update_FullMethodName  = "/CatalogService/Update"
 	CatalogService_GetOne_FullMethodName  = "/CatalogService/GetOne"
 	CatalogService_GetMore_FullMethodName = "/CatalogService/GetMore"
+	CatalogService_GetAll_FullMethodName  = "/CatalogService/GetAll"
 	CatalogService_Delete_FullMethodName  = "/CatalogService/Delete"
 )
 
@@ -34,6 +35,7 @@ type CatalogServiceClient interface {
 	Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Response, error)
 	GetOne(ctx context.Context, in *GetOneReq, opts ...grpc.CallOption) (*GetMoreResp, error)
 	GetMore(ctx context.Context, in *GetMoreReq, opts ...grpc.CallOption) (*GetMoreResp, error)
+	GetAll(ctx context.Context, in *GetAllReq, opts ...grpc.CallOption) (*GetAllResp, error)
 	Delete(ctx context.Context, in *DeleteReq, opts ...grpc.CallOption) (*Response, error)
 }
 
@@ -85,6 +87,16 @@ func (c *catalogServiceClient) GetMore(ctx context.Context, in *GetMoreReq, opts
 	return out, nil
 }
 
+func (c *catalogServiceClient) GetAll(ctx context.Context, in *GetAllReq, opts ...grpc.CallOption) (*GetAllResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAllResp)
+	err := c.cc.Invoke(ctx, CatalogService_GetAll_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *catalogServiceClient) Delete(ctx context.Context, in *DeleteReq, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
@@ -103,6 +115,7 @@ type CatalogServiceServer interface {
 	Update(context.Context, *UpdateReq) (*Response, error)
 	GetOne(context.Context, *GetOneReq) (*GetMoreResp, error)
 	GetMore(context.Context, *GetMoreReq) (*GetMoreResp, error)
+	GetAll(context.Context, *GetAllReq) (*GetAllResp, error)
 	Delete(context.Context, *DeleteReq) (*Response, error)
 	mustEmbedUnimplementedCatalogServiceServer()
 }
@@ -125,6 +138,9 @@ func (UnimplementedCatalogServiceServer) GetOne(context.Context, *GetOneReq) (*G
 }
 func (UnimplementedCatalogServiceServer) GetMore(context.Context, *GetMoreReq) (*GetMoreResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMore not implemented")
+}
+func (UnimplementedCatalogServiceServer) GetAll(context.Context, *GetAllReq) (*GetAllResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
 }
 func (UnimplementedCatalogServiceServer) Delete(context.Context, *DeleteReq) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -222,6 +238,24 @@ func _CatalogService_GetMore_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CatalogService_GetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatalogServiceServer).GetAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatalogService_GetAll_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatalogServiceServer).GetAll(ctx, req.(*GetAllReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CatalogService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteReq)
 	if err := dec(in); err != nil {
@@ -262,6 +296,10 @@ var CatalogService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMore",
 			Handler:    _CatalogService_GetMore_Handler,
+		},
+		{
+			MethodName: "GetAll",
+			Handler:    _CatalogService_GetAll_Handler,
 		},
 		{
 			MethodName: "Delete",

@@ -14,7 +14,16 @@ service CatalogService{
     rpc Update (UpdateReq) returns (Response);
     rpc GetOne (GetOneReq) returns (GetMoreResp);
     rpc GetMore (GetMoreReq) returns (GetMoreResp);
+    rpc GetAll (GetAllReq) returns (GetAllResp);
     rpc Delete (DeleteReq) returns (Response);
+}
+
+message GetAllReq{
+    string name = 1;
+}
+
+message GetAllResp{
+    repeated product products = 1;
 }
 
 message AddReq{

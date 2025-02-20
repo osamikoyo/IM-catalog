@@ -64,3 +64,4 @@ func (s *Storage) Delete(id uint64) error {
 	res := s.coll.FindOneAndDelete(s.ctx, filter)
 	return res.Err()
 }
+
