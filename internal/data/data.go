@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/osamikoyo/IM-catalog/internal/config"
+	"github.com/osamikoyo/IM-catalog/internal/data/models"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -29,4 +30,8 @@ func New(cfg *config.Config) (*Storage, error) {
 		coll: coll,
 		ctx: ctx,
 	}, nil
+}
+
+func (s *Storage) Add(product *models.Product) error {
+	
 }
