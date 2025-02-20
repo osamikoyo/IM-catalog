@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/osamikoyo/IM-catalog/internal/config"
@@ -33,5 +34,8 @@ func New(cfg *config.Config) (*Storage, error) {
 }
 
 func (s *Storage) Add(product *models.Product) error {
-	
+	product.ID = rand.Uint64()
+
+	_, err := s.coll.InsertOne(s.ctx, product)
+	return err
 }
