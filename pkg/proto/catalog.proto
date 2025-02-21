@@ -12,7 +12,7 @@ message product{
 service CatalogService{
     rpc Add (AddReq) returns (Response);
     rpc Update (UpdateReq) returns (Response);
-    rpc GetOne (GetOneReq) returns (GetMoreResp);
+    rpc GetOne (GetOneReq) returns (GetOneResp);
     rpc GetMore (GetMoreReq) returns (GetMoreResp);
     rpc GetAll (GetAllReq) returns (GetAllResp);
     rpc Delete (DeleteReq) returns (Response);

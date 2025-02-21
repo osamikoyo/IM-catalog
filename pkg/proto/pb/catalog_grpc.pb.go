@@ -33,7 +33,7 @@ const (
 type CatalogServiceClient interface {
 	Add(ctx context.Context, in *AddReq, opts ...grpc.CallOption) (*Response, error)
 	Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Response, error)
-	GetOne(ctx context.Context, in *GetOneReq, opts ...grpc.CallOption) (*GetMoreResp, error)
+	GetOne(ctx context.Context, in *GetOneReq, opts ...grpc.CallOption) (*GetOneResp, error)
 	GetMore(ctx context.Context, in *GetMoreReq, opts ...grpc.CallOption) (*GetMoreResp, error)
 	GetAll(ctx context.Context, in *GetAllReq, opts ...grpc.CallOption) (*GetAllResp, error)
 	Delete(ctx context.Context, in *DeleteReq, opts ...grpc.CallOption) (*Response, error)
@@ -67,9 +67,9 @@ func (c *catalogServiceClient) Update(ctx context.Context, in *UpdateReq, opts .
 	return out, nil
 }
 
-func (c *catalogServiceClient) GetOne(ctx context.Context, in *GetOneReq, opts ...grpc.CallOption) (*GetMoreResp, error) {
+func (c *catalogServiceClient) GetOne(ctx context.Context, in *GetOneReq, opts ...grpc.CallOption) (*GetOneResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetMoreResp)
+	out := new(GetOneResp)
 	err := c.cc.Invoke(ctx, CatalogService_GetOne_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -113,7 +113,7 @@ func (c *catalogServiceClient) Delete(ctx context.Context, in *DeleteReq, opts .
 type CatalogServiceServer interface {
 	Add(context.Context, *AddReq) (*Response, error)
 	Update(context.Context, *UpdateReq) (*Response, error)
-	GetOne(context.Context, *GetOneReq) (*GetMoreResp, error)
+	GetOne(context.Context, *GetOneReq) (*GetOneResp, error)
 	GetMore(context.Context, *GetMoreReq) (*GetMoreResp, error)
 	GetAll(context.Context, *GetAllReq) (*GetAllResp, error)
 	Delete(context.Context, *DeleteReq) (*Response, error)
@@ -133,7 +133,7 @@ func (UnimplementedCatalogServiceServer) Add(context.Context, *AddReq) (*Respons
 func (UnimplementedCatalogServiceServer) Update(context.Context, *UpdateReq) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedCatalogServiceServer) GetOne(context.Context, *GetOneReq) (*GetMoreResp, error) {
+func (UnimplementedCatalogServiceServer) GetOne(context.Context, *GetOneReq) (*GetOneResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
 }
 func (UnimplementedCatalogServiceServer) GetMore(context.Context, *GetMoreReq) (*GetMoreResp, error) {

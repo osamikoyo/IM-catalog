@@ -85,5 +85,10 @@ func (s *Server) GetMore(_ context.Context, req *pb.GetMoreReq) (*pb.GetMoreResp
 		},
 	}, nil
 }
-func (s *Server) GetOne(_ context.Context, req *pb.GetOneReq) (*pb.GetMoreResp, error){}
+func (s *Server) GetOne(_ context.Context, req *pb.GetOneReq) (*pb.GetMoreResp, error){
+	product, err := s.storage.Get(req.ID)
+	if err != nil {
+		return &pb.GetMoreResp{}
+	}
+}
 func (s *Server) Update(_ context.Context, req *pb.UpdateReq) (*pb.Response, error){}
