@@ -85,10 +85,24 @@ func (s *Server) GetMore(_ context.Context, req *pb.GetMoreReq) (*pb.GetMoreResp
 		},
 	}, nil
 }
-func (s *Server) GetOne(_ context.Context, req *pb.GetOneReq) (*pb.GetMoreResp, error){
+func (s *Server) GetOne(_ context.Context, req *pb.GetOneReq) (*pb.GetOneResp, error){
 	product, err := s.storage.Get(req.ID)
 	if err != nil {
-		return &pb.GetMoreResp{}
+		return &pb.GetOneResp{
+			Product: nil,
+			Response: &pb.Response{
+				Error: err.Error(),
+				Status: http.StatusInternalServerError,
+			},
+		}, err
 	}
+
+	return &pb.GetOneResp{
+		Response: &pb.Response{
+			Status: http.StatusOK,
+			Error: "",
+		},
+		Product: models.ToPB(product),
+	}, nil
 }
 func (s *Server) Update(_ context.Context, req *pb.UpdateReq) (*pb.Response, error){}
