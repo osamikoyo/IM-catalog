@@ -76,7 +76,32 @@ func (s *Storage) GetMore(name string) ([]models.Product, error){
 
 	return products, nil
 }
- 
+
+func (s *Storage) GetAll(name string) ([]models.Product, error) {
+	var products []models.Product
+
+	cursor, err := s.coll.Find(s.ctx, bson.M{})
+	if err != nil{
+		return nil, err
+	}
+
+	var product models.Product
+
+	for cursor.Next(s.ctx) {
+		if err = cursor.Decode(&product);err != nil{
+			fmt.Println(err)
+		}
+
+		products = append(products, product)
+	}
+
+	if cursor.Err() != nil{
+		return nil, err
+	}
+
+	return products, nil
+}
+
 func (s *Storage) Delete(id uint64) error {
 	filter := bson.M{
 		"id" : id,
