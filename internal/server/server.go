@@ -105,4 +105,17 @@ func (s *Server) GetOne(_ context.Context, req *pb.GetOneReq) (*pb.GetOneResp, e
 		Product: models.ToPB(product),
 	}, nil
 }
-func (s *Server) Update(_ context.Context, req *pb.UpdateReq) (*pb.Response, error){}
+func (s *Server) Update(_ context.Context, req *pb.UpdateReq) (*pb.Response, error){
+	err := s.storage.Update(req.ID, models.ToModels(req.NewParams))
+	if err != nil{
+		return &pb.Response{
+			Status: http.StatusInternalServerError,
+			Error: err.Error(),
+		}, nil
+	}
+
+	return &pb.Response{
+		Status: http.StatusOK,
+		Error: "",
+	}, nil
+}
