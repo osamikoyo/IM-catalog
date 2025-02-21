@@ -1,0 +1,3 @@
+port = 50053
+host = "localhost"
+dsn = "mongodb://localhost:27017"

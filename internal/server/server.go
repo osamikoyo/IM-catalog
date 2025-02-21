@@ -11,11 +11,11 @@ import (
 
 type Server struct{
 	pb.UnimplementedCatalogServiceServer
-	storage *data.Storage
+	Storage *data.Storage
 }
 
 func (s *Server) Add(_ context.Context, req *pb.AddReq) (*pb.Response, error){
-	err := s.storage.Add(models.ToModels(req.Product))
+	err := s.Storage.Add(models.ToModels(req.Product))
 	if err != nil{
 		return &pb.Response{
 			Status: http.StatusInternalServerError,
@@ -30,7 +30,7 @@ func (s *Server) Add(_ context.Context, req *pb.AddReq) (*pb.Response, error){
 }
 
 func (s *Server) Delete(_ context.Context, req *pb.DeleteReq) (*pb.Response, error){
-	err := s.storage.Delete(req.ID)
+	err := s.Storage.Delete(req.ID)
 	if err != nil{
 		return &pb.Response{
 			Status: http.StatusInternalServerError,
@@ -45,7 +45,7 @@ func (s *Server) Delete(_ context.Context, req *pb.DeleteReq) (*pb.Response, err
 }
 
 func (s *Server) GetAll(_ context.Context, req *pb.GetAllReq) (*pb.GetAllResp, error){
-	products, err := s.storage.GetAll(req.Name)
+	products, err := s.Storage.GetAll(req.Name)
 	if err != nil{
 		return &pb.GetAllResp{
 			Response: &pb.Response{
@@ -66,7 +66,7 @@ func (s *Server) GetAll(_ context.Context, req *pb.GetAllReq) (*pb.GetAllResp, e
 }
 
 func (s *Server) GetMore(_ context.Context, req *pb.GetMoreReq) (*pb.GetMoreResp, error){
-	products, err := s.storage.GetAll(req.Name)
+	products, err := s.Storage.GetAll(req.Name)
 	if err != nil{
 		return &pb.GetMoreResp{
 			Response: &pb.Response{
@@ -86,7 +86,7 @@ func (s *Server) GetMore(_ context.Context, req *pb.GetMoreReq) (*pb.GetMoreResp
 	}, nil
 }
 func (s *Server) GetOne(_ context.Context, req *pb.GetOneReq) (*pb.GetOneResp, error){
-	product, err := s.storage.Get(req.ID)
+	product, err := s.Storage.Get(req.ID)
 	if err != nil {
 		return &pb.GetOneResp{
 			Product: nil,
@@ -106,7 +106,7 @@ func (s *Server) GetOne(_ context.Context, req *pb.GetOneReq) (*pb.GetOneResp, e
 	}, nil
 }
 func (s *Server) Update(_ context.Context, req *pb.UpdateReq) (*pb.Response, error){
-	err := s.storage.Update(req.ID, models.ToModels(req.NewParams))
+	err := s.Storage.Update(req.ID, models.ToModels(req.NewParams))
 	if err != nil{
 		return &pb.Response{
 			Status: http.StatusInternalServerError,
