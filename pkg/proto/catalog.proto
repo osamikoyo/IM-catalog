@@ -23,6 +23,7 @@ message GetAllReq{
 }
 
 message GetAllResp{
+    Response response = 2;
     repeated product products = 1;
 }
 

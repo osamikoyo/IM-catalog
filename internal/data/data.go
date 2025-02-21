@@ -111,3 +111,16 @@ func (s *Storage) Delete(id uint64) error {
 	return res.Err()
 }
 
+func (s *Storage) Update(id uint64, newparams models.Product) error {
+	filter := bson.M{
+		"id" : id,
+	}
+
+	update, err := bson.Marshal(&newparams)
+	if err != nil{
+		return err
+	}
+
+	_, err = s.coll.UpdateOne(s.ctx, filter, update)
+	return err
+}
