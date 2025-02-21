@@ -56,7 +56,13 @@ func (s *Server) GetAll(_ context.Context, req *pb.GetAllReq) (*pb.GetAllResp, e
 		}, nil
 	}
 
-	
+	return &pb.GetAllResp{
+		Products: models.ToPbArray(products),
+		Response: &pb.Response{
+			Error: "",
+			Status: http.StatusOK,
+		},
+	}, nil	
 }
 func (s *Server) GetMore(_ context.Context, req *pb.GetMoreReq) (*pb.GetMoreResp, error){}
 func (s *Server) GetOne(_ context.Context, req *pb.GetOneReq) (*pb.GetMoreResp, error){}

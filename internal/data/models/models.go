@@ -26,3 +26,16 @@ func ToPB(p *Product) *pb.Product {
 		Price: p.Price,
 	}
 }
+
+func ToPbArray(p []Product) []*pb.Product {
+	var result []*pb.Product
+	for _, pr := range p {
+		result = append(result, &pb.Product{
+			ID: pr.ID,
+			Name: pr.Name,
+			Description: pr.Desc,
+			Price: pr.Price,
+		})
+	}
+	return result
+}
