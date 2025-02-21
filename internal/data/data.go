@@ -56,6 +56,27 @@ func (s *Storage) Get(id uint64) (*models.Product, error){
 	return &product, nil
 }
 
+func (s *Storage) GetMore(name string) ([]models.Product, error){
+	var products []models.Product
+
+	filter, err := s.coll.Find(s.ctx, bson.M{
+		"name" : name,
+	})
+	if err != nil{
+		return nil, err
+	}
+
+	var product models.Product
+
+	for filter.Next(s.ctx) {
+		filter.Decode(&product)
+
+		products = append(products, product)
+	}
+
+	return products, nil
+}
+ 
 func (s *Storage) Delete(id uint64) error {
 	filter := bson.M{
 		"id" : id,
